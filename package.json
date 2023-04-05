@@ -1,0 +1,23 @@
+{
+  "name": "embed-builder",
+  "version": "1.0.0",
+  "description": "A Discord Bot to quickly create, manage and send embeds",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Av32000/Embed-Builder.git"
+  },
+  "author": "Av32000",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Av32000/Embed-Builder/issues"
+  },
+  "homepage": "https://github.com/Av32000/Embed-Builder#readme",
+  "dependencies": {
+    "discord-interactions": "^3.3.0",
+    "itty-router": "^3.0.12"
+  }
+}
