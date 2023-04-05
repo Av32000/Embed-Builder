@@ -1,9 +1,11 @@
-<center>
-<h1>Embed Builder</h1>
+<h1 align="center">Embed Builder</h1>
+<p align=center>
+<br/>
 <a href="https://discord.com/api/oauth2/authorize?client_id=1093105357800357908&permissions=326417574976&scope=bot%20applications.commands"><img src="https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white" /></a>
 <img src="https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white" />
 <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" />
-</center>
+</p>
+
 </br>
 Discord Bot to create and send customizable embeds in few seconds.
 
