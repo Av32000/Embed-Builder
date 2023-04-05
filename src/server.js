@@ -34,7 +34,6 @@ router.get('/', (request, env) => {
 router.post('/', async (request, env) => {
     const message = await request.json();
     if (message.type === InteractionType.PING) {
-        console.log('Handling Ping request');
         return new JsonResponse({
             type: InteractionResponseType.PONG,
         });
@@ -50,7 +49,7 @@ router.post('/', async (request, env) => {
                     embeds: [
                         {
                             title: GetOptions(options, "title").value,
-                            description: GetOptions(options, "description")?.value,
+                            description: GetOptions(options, "description")?.value.split("\\n").join("\n"),
                             color: GetOptions(options, "color")?.value,
                             url: GetOptions(options, "url")?.value,
                             author: (hideAuthor == null || !hideAuthor) && {
@@ -83,7 +82,6 @@ export default {
         if (request.method === 'POST') {
             const signature = request.headers.get('x-signature-ed25519');
             const timestamp = request.headers.get('x-signature-timestamp');
-            console.log(signature, timestamp, env.DISCORD_PUBLIC_KEY);
             const body = await request.clone().arrayBuffer();
             const isValidRequest = verifyKey(
                 body,
