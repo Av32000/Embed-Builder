@@ -18,6 +18,13 @@ class JsonResponse extends Response {
     }
 }
 
+const GetOptions = (options, name) => {
+    return options.find(function (objet) {
+        return objet.name === name;
+    });
+}
+
+
 const router = Router();
 
 router.get('/', (request, env) => {
@@ -26,7 +33,6 @@ router.get('/', (request, env) => {
 
 router.post('/', async (request, env) => {
     const message = await request.json();
-    console.log(message);
     if (message.type === InteractionType.PING) {
         console.log('Handling Ping request');
         return new JsonResponse({
@@ -36,10 +42,32 @@ router.post('/', async (request, env) => {
 
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         if (message.data.name.toLowerCase() == EMBED_COMMAND.name.toLowerCase()) {
+            const options = message.data.options
+            const hideAuthor = GetOptions(options, "hide-author")?.value
             return new JsonResponse({
                 type: 4,
                 data: {
-                    content: "Embd",
+                    embeds: [
+                        {
+                            title: GetOptions(options, "title").value,
+                            description: GetOptions(options, "description")?.value,
+                            color: GetOptions(options, "color")?.value,
+                            url: GetOptions(options, "url")?.value,
+                            author: (hideAuthor == null || !hideAuthor) && {
+                                name: message.member.user.username, icon_url: `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png`
+                            },
+                            footer: {
+                                text: GetOptions(options, "footer")?.value.split(" /// ")[0],
+                                icon_url: GetOptions(options, "footer")?.value.split(" /// ")[1]
+                            },
+                            image: {
+                                url: GetOptions(options, "image")?.value
+                            },
+                            thumbnail: {
+                                url: GetOptions(options, "image")?.value
+                            }
+                        }
+                    ]
                 },
             });
         }
