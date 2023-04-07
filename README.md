@@ -18,7 +18,7 @@ Let's invite the Bot by clicking on this button:
 The bot has one simple command : `/embed`:
 
 ```
-/embed <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author]
+/embed <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
 ```
 
 - `title` => Title of the embed (String) (Required)
