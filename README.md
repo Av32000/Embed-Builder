@@ -29,6 +29,7 @@ The bot has one simple command : `/embed`:
 - `image` => Embed Image
 - `thumbnail` => Embed Thumbnail
 - `hide-author` => By default the author of the interaction is designated as the author of the embed. Set this on `True` to hide it (Boolean)
+- `hide-author` => Set another user as embed author (User)
 
 ## Run Localy
 
