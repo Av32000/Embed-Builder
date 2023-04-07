@@ -43,5 +43,10 @@ export const EMBED_COMMAND = {
             name: "hide-author",
             description: "True to hide the author (default : false)"
         },
+        {
+            type: 6,
+            name: "custom-author",
+            description: "Set another user as embed author"
+        }
     ]
 };

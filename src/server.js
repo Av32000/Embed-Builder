@@ -43,6 +43,10 @@ router.post('/', async (request, env) => {
         if (message.data.name.toLowerCase() == EMBED_COMMAND.name.toLowerCase()) {
             const options = message.data.options
             const hideAuthor = GetOptions(options, "hide-author")?.value
+            const customAuthorId = GetOptions(options, "custom-author")?.value
+
+            const customAuthor = customAuthorId != null && await GetUserData(customAuthorId, env.DISCORD_TOKEN)
+
             return new JsonResponse({
                 type: 4,
                 data: {
@@ -53,7 +57,7 @@ router.post('/', async (request, env) => {
                             color: GetOptions(options, "color")?.value,
                             url: GetOptions(options, "url")?.value,
                             author: (hideAuthor == null || !hideAuthor) && {
-                                name: message.member.user.username, icon_url: `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png`
+                                name: customAuthorId != null ? customAuthor.username : message.member.user.username, icon_url: customAuthorId != null ? (customAuthor.avatar != null ? `https://cdn.discordapp.com/avatars/${customAuthorId.toString()}/${customAuthor.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${customAuthor.discriminator % 5}.png`) : `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png`
                             },
                             footer: {
                                 text: GetOptions(options, "footer")?.value.split(" /// ")[0],
@@ -75,10 +79,20 @@ router.post('/', async (request, env) => {
     console.error('Unknown Type');
     return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
 });
+
+async function GetUserData(id, token) {
+    const url = `https://discord.com/api/v10/users/${id}`
+
+    return await fetch(url, { headers: { Authorization: `Bot ${token}`, } }).then(async res => {
+        return await res.json()
+    })
+}
+
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
 export default {
     async fetch(request, env) {
+
         if (request.method === 'POST') {
             const signature = request.headers.get('x-signature-ed25519');
             const timestamp = request.headers.get('x-signature-timestamp');

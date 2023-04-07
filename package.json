@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "dev": "wrangler dev src/server.js",
+    "dev": "wrangler dev src/server.js --env dev",
     "start": "node src/server.js",
     "register": "node src/register.js",
     "publish": "wrangler publish"

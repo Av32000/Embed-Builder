@@ -7,3 +7,7 @@ node_compat = true
 [[rules]]
 type = "ESModule"
 globs = [ "**/*.js" ]
+
+[env.dev]
+workers_dev = true
+vars_files = ".dev.env"
