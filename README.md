@@ -23,7 +23,7 @@ The bot has two simple commands : `/embed` and `/edit-embed`:
 /edit-embed <message-id> <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
 ```
 
-- `message-id` => ID of the message to be updated (Required for edit)
+- `message-id` => ID of the message to be updated (Required to edit)
 - `title` => Title of the embed (String) (Required)
 - `description` => Content / Description of the embed (String)
 - `color` => Decimal code of the color (Integer)
