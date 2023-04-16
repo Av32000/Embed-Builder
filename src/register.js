@@ -1,4 +1,4 @@
-import { EMBED_COMMAND } from './commands.js';
+import { EDIT_EMBED_COMMAND, EMBED_COMMAND } from './commands.js';
 import fetch from 'node-fetch';
 
 const token = process.env.DISCORD_TOKEN;
@@ -25,7 +25,7 @@ async function registerCommands(url) {
       Authorization: `Bot ${token}`,
     },
     method: 'PUT',
-    body: JSON.stringify([EMBED_COMMAND]),
+    body: JSON.stringify([EMBED_COMMAND, EDIT_EMBED_COMMAND]),
   });
 
   if (response.ok) {

@@ -4,7 +4,7 @@ import {
     InteractionType,
     verifyKey,
 } from 'discord-interactions';
-import { EMBED_COMMAND } from './commands.js';
+import { EDIT_EMBED_COMMAND, EMBED_COMMAND } from './commands.js';
 
 class JsonResponse extends Response {
     constructor(body, init) {
@@ -41,36 +41,26 @@ router.post('/', async (request, env) => {
 
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         if (message.data.name.toLowerCase() == EMBED_COMMAND.name.toLowerCase()) {
-            const options = message.data.options
-            const hideAuthor = GetOptions(options, "hide-author")?.value
-            const customAuthorId = GetOptions(options, "custom-author")?.value
+            return new JsonResponse(await FormatEmbed(message))
+        } else if (message.data.name.toLowerCase() == EDIT_EMBED_COMMAND.name.toLowerCase()) {
+            const embed = (await FormatEmbed(message)).data
+            let status
+            await fetch(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${GetOptions(message.data.options, "message-id").value}`, {
+                method: 'PATCH', headers: {
+                    Authorization: `Bot ${env.DISCORD_TOKEN}`,
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'User-Agent': 'Embed Builder'
+                }, body: JSON.stringify(embed)
+            }).then(response => {
+                status = response.ok
+            })
 
-            const customAuthor = customAuthorId != null && await GetUserData(customAuthorId, env.DISCORD_TOKEN)
 
             return new JsonResponse({
                 type: 4,
                 data: {
-                    embeds: [
-                        {
-                            title: GetOptions(options, "title").value,
-                            description: GetOptions(options, "description")?.value.split("\\n").join("\n"),
-                            color: GetOptions(options, "color")?.value,
-                            url: GetOptions(options, "url")?.value,
-                            author: (hideAuthor == null || !hideAuthor) && {
-                                name: customAuthorId != null ? customAuthor.username : message.member.user.username, icon_url: customAuthorId != null ? (customAuthor.avatar != null ? `https://cdn.discordapp.com/avatars/${customAuthorId.toString()}/${customAuthor.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${customAuthor.discriminator % 5}.png`) : `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png`
-                            },
-                            footer: {
-                                text: GetOptions(options, "footer")?.value.split(" /// ")[0],
-                                icon_url: GetOptions(options, "footer")?.value.split(" /// ")[1]
-                            },
-                            image: {
-                                url: GetOptions(options, "image")?.value
-                            },
-                            thumbnail: {
-                                url: GetOptions(options, "image")?.value
-                            }
-                        }
-                    ]
+                    content: status ? "✨ The message has been updated ✨" : "🚫 Unable to edit this message 🚫",
+                    flags: 64,
                 },
             });
         }
@@ -86,6 +76,41 @@ async function GetUserData(id, token) {
     return await fetch(url, { headers: { Authorization: `Bot ${token}`, } }).then(async res => {
         return await res.json()
     })
+}
+
+async function FormatEmbed(message) {
+    const options = message.data.options
+    const hideAuthor = GetOptions(options, "hide-author")?.value
+    const customAuthorId = GetOptions(options, "custom-author")?.value
+
+    const customAuthor = customAuthorId != null && await GetUserData(customAuthorId, env.DISCORD_TOKEN)
+
+    return {
+        type: 4,
+        data: {
+            embeds: [
+                {
+                    title: GetOptions(options, "title")?.value,
+                    description: GetOptions(options, "description")?.value.split("\\n").join("\n"),
+                    color: GetOptions(options, "color")?.value,
+                    url: GetOptions(options, "url")?.value,
+                    author: (hideAuthor == null || !hideAuthor) && {
+                        name: customAuthorId != null ? customAuthor.username : message.member.user.username, icon_url: customAuthorId != null ? (customAuthor.avatar != null ? `https://cdn.discordapp.com/avatars/${customAuthorId.toString()}/${customAuthor.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${customAuthor.discriminator % 5}.png`) : `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png`
+                    },
+                    footer: {
+                        text: GetOptions(options, "footer")?.value.split(" /// ")[0],
+                        icon_url: GetOptions(options, "footer")?.value.split(" /// ")[1]
+                    },
+                    image: {
+                        url: GetOptions(options, "image")?.value
+                    },
+                    thumbnail: {
+                        url: GetOptions(options, "image")?.value
+                    }
+                }
+            ]
+        },
+    };
 }
 
 router.all('*', () => new Response('Not Found.', { status: 404 }));

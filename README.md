@@ -15,12 +15,15 @@ Let's invite the Bot by clicking on this button:
 
 ## Usage
 
-The bot has one simple command : `/embed`:
+The bot has two simple commands : `/embed` and `/edit-embed`:
 
 ```
 /embed <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
+
+/edit-embed <message-id> <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
 ```
 
+- `message-id` => ID of the message to be updated (Required for edit)
 - `title` => Title of the embed (String) (Required)
 - `description` => Content / Description of the embed (String)
 - `color` => Decimal code of the color (Integer)
