@@ -41,9 +41,9 @@ router.post('/', async (request, env) => {
 
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         if (message.data.name.toLowerCase() == EMBED_COMMAND.name.toLowerCase()) {
-            return new JsonResponse(await FormatEmbed(message))
+            return new JsonResponse(await FormatEmbed(message, env.DISCORD_TOKEN))
         } else if (message.data.name.toLowerCase() == EDIT_EMBED_COMMAND.name.toLowerCase()) {
-            const embed = (await FormatEmbed(message)).data
+            const embed = (await FormatEmbed(message, env.DISCORD_TOKEN)).data
             let status
             await fetch(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${GetOptions(message.data.options, "message-id").value}`, {
                 method: 'PATCH', headers: {
@@ -78,12 +78,12 @@ async function GetUserData(id, token) {
     })
 }
 
-async function FormatEmbed(message) {
+async function FormatEmbed(message, token) {
     const options = message.data.options
     const hideAuthor = GetOptions(options, "hide-author")?.value
     const customAuthorId = GetOptions(options, "custom-author")?.value
 
-    const customAuthor = customAuthorId != null && await GetUserData(customAuthorId, env.DISCORD_TOKEN)
+    const customAuthor = customAuthorId != null && await GetUserData(customAuthorId, token)
 
     return {
         type: 4,
