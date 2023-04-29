@@ -48,7 +48,7 @@ async function FormatEmbed(message, token) {
     };
 }
 
-module.exports = {
+export {
     FormatEmbed,
     GetOptions
 }
