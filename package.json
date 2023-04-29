@@ -8,6 +8,7 @@
     "dev": "wrangler dev src/server.js --env dev",
     "start": "node src/server.js",
     "register": "node src/register.js",
+    "test": "jest",
     "publish": "wrangler publish"
   },
   "repository": {
@@ -23,9 +24,11 @@
   "dependencies": {
     "discord-interactions": "^3.3.0",
     "itty-router": "^3.0.12",
+    "jest": "^29.5.0",
     "node-fetch": "^3.3.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.1",
     "wrangler": "^2.14.0"
   }
 }
