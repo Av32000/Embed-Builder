@@ -29,8 +29,8 @@ async function FormatEmbed(message, token) {
                     color: GetOptions(options, "color")?.value,
                     url: GetOptions(options, "url")?.value,
                     author: (hideAuthor == null || !hideAuthor) && {
-                        name: customAuthorId != null ? customAuthor.username : message.member.user.username, 
-                        icon_url: customAuthorId != null ? (customAuthor.avatar != null ? `https://cdn.discordapp.com/avatars/${customAuthorId.toString()}/${customAuthor.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${customAuthor.discriminator % 5}.png`) : (message.member.user.avatar != null ? `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${message.member.user.discriminator % 5}.png`)
+                        name: customAuthorId != null ? (customAuthor.global_name || customAuthor.username) : (message.member.user.global_name || message.member.user.username),
+                        icon_url: customAuthorId != null ? (customAuthor.avatar != null ? `https://cdn.discordapp.com/avatars/${customAuthorId.toString()}/${customAuthor.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${Math.abs((parseInt(customAuthor.id) >> 22) % 6)}.png`) : (message.member.user.avatar != null ? `https://cdn.discordapp.com/avatars/${message.member.user.id.toString()}/${message.member.user.avatar}.png` : `https://cdn.discordapp.com/embed/avatars/${Math.abs((parseInt(message.member.user.id) >> 22) % 6)}.png`)
                     },
                     footer: {
                         text: GetOptions(options, "footer")?.value.split(" /// ")[0],
