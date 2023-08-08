@@ -1,6 +1,5 @@
 name = "embed-builder-bot"
 main = "./src/server.js"
-type = "javascript"
 compatibility_date="2022-02-26"
 node_compat = true
 

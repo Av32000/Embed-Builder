@@ -9,7 +9,7 @@
     "start": "node src/server.js",
     "register": "node src/register.js",
     "test": "jest",
-    "publish": "wrangler publish"
+    "publish": "wrangler deploy"
   },
   "repository": {
     "type": "git",
