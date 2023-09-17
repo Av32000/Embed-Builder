@@ -4,7 +4,7 @@ import {
     InteractionType,
     verifyKey,
 } from 'discord-interactions';
-import { EDIT_EMBED_COMMAND, EMBED_COMMAND } from './commands.js';
+import { EDIT_EMBED_COMMAND, EMBED_COMMAND, GENERATE_JSON } from './commands.js';
 import { FormatEmbed, GetOptions } from './FormatEmbed.js';
 
 class JsonResponse extends Response {
@@ -36,7 +36,18 @@ router.post('/', async (request, env) => {
     if (message.type === InteractionType.APPLICATION_COMMAND) {
         if (message.data.name.toLowerCase() == EMBED_COMMAND.name.toLowerCase()) {
             return new JsonResponse(await FormatEmbed(message, env.DISCORD_TOKEN))
-        } else if (message.data.name.toLowerCase() == EDIT_EMBED_COMMAND.name.toLowerCase()) {
+        } else if (message.data.name.toLowerCase() == GENERATE_JSON.name.toLowerCase()) {
+            let embedJson = await FormatEmbed(message, env.DISCORD_TOKEN)
+            return new JsonResponse({
+                type: 4,
+                data: {
+                    content: "JSON of the Embed : \n```json\n" + JSON.stringify(embedJson.data) + "```",
+                    embeds: embedJson.data.embeds,
+                    flags: 1 << 6
+                }
+            })
+        }
+        else if (message.data.name.toLowerCase() == EDIT_EMBED_COMMAND.name.toLowerCase()) {
             const embed = (await FormatEmbed(message, env.DISCORD_TOKEN)).data
             let status
             await fetch(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${GetOptions(message.data.options, "message-id").value}`, {

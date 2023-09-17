@@ -51,6 +51,12 @@ export const EMBED_COMMAND = {
     ]
 };
 
+export const GENERATE_JSON = {
+    name: "generate-json",
+    description: "Generate the JSON of the Embed",
+    options: EMBED_COMMAND.options
+}
+
 export const EDIT_EMBED_COMMAND = {
     name: 'edit-embed',
     description: 'Edit an embed',

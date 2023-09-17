@@ -15,10 +15,12 @@ Let's invite the Bot by clicking on this button:
 
 ## Usage
 
-The bot has two simple commands : `/embed` and `/edit-embed`:
+The bot has 3 simple commands : `/embed`, `/generate-json` and `/edit-embed`:
 
 ```
 /embed <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
+
+/generate-json <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
 
 /edit-embed <message-id> <title> [description] [color] [url] [footer] [image] [thumbnail] [hide-author] [custom-author]
 ```
@@ -27,10 +29,10 @@ The bot has two simple commands : `/embed` and `/edit-embed`:
 - `title` => Title of the embed (String) (Required)
 - `description` => Content / Description of the embed (String)
 - `color` => Decimal code of the color (Integer)
-- `url` => URL opened when clicking on the title
+- `url` => URL opened when clicking on the title (URL)
 - `footer` => Footer of the embed (Text /// URL)
-- `image` => Embed Image
-- `thumbnail` => Embed Thumbnail
+- `image` => Embed Image (URL)
+- `thumbnail` => Embed Thumbnail (URL)
 - `hide-author` => By default the author of the interaction is designated as the author of the embed. Set this on `True` to hide it (Boolean)
 - `custom-author` => Set another user as embed author (User)
 
