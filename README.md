@@ -28,7 +28,7 @@ The bot has 3 simple commands : `/embed`, `/generate-json` and `/edit-embed`:
 - `message-id` => ID of the message to be updated (Required to edit)
 - `title` => Title of the embed (String) (Required)
 - `description` => Content / Description of the embed (String)
-- `color` => Decimal code of the color (Integer)
+- `color` => Hex / Decimal / rgb() Code of the color (String)
 - `url` => URL opened when clicking on the title (URL)
 - `footer` => Footer of the embed (Text /// URL)
 - `image` => Embed Image (URL)

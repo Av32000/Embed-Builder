@@ -12,6 +12,25 @@ const GetOptions = (options, name) => {
     });
 }
 
+const FormatColor = (color) => {
+    let s = color.toString()
+    if (s.startsWith("#")) {
+        s = s.replace("#", "");
+        let decimalColor = parseInt(s, 16);
+        return decimalColor;
+    } else if (s.startsWith("rgb") && s.split(",").length == 3) {
+        s = s.split("(")[1].split(")")[0]
+        color = {
+            r: parseInt(s.split(",")[0]),
+            g: parseInt(s.split(",")[1]),
+            b: parseInt(s.split(",")[2]),
+        }
+        return (color.r << 16) + (color.g << 8) + (color.b)
+    } else {
+        return parseInt(color)
+    }
+}
+
 async function FormatEmbed(message, token) {
     const options = message.data.options
     const hideAuthor = GetOptions(options, "hide-author")?.value
@@ -26,7 +45,7 @@ async function FormatEmbed(message, token) {
                 {
                     title: GetOptions(options, "title")?.value,
                     description: GetOptions(options, "description")?.value.split("\\n").join("\n"),
-                    color: GetOptions(options, "color")?.value,
+                    color: GetOptions(options, "color")?.value != null && FormatColor(GetOptions(options, "color")?.value),
                     url: GetOptions(options, "url")?.value,
                     author: (hideAuthor == null || !hideAuthor) && {
                         name: customAuthorId != null ? (customAuthor.global_name || customAuthor.username) : (message.member.user.global_name || message.member.user.username),

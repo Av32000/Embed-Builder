@@ -14,9 +14,9 @@ export const EMBED_COMMAND = {
             description: "Embed Description"
         },
         {
-            type: 4,
+            type: 3,
             name: "color",
-            description: "Embed Color - Decimal Value"
+            description: "Embed Color - Decimal / Hex / rgb()"
         },
         {
             type: 3,
